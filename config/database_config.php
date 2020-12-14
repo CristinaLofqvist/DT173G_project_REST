@@ -1,5 +1,5 @@
 <?php
-    $devMode=true;
+    $devMode=false;
     session_start();
     //Enable error reporting
     error_reporting(-0);//Report all detected errors
@@ -19,9 +19,9 @@
         define ("DBDATABASE","DT173GProject");
     } else {
         /*DB settings (miunserver) */
-        define ("DBHOST","studentmysql.miun.se");
-        define ("DBUSER","crlo1900");
-        define ("DBPASS","glw52zrb");
-        define ("DBDATABASE","crlo1900");
+        define ("DBHOST","localhost");
+        define ("DBUSER","uhlbzpyg_dt173g");
+        define ("DBPASS","~Z(8_}N0wB44");
+        define ("DBDATABASE","uhlbzpyg_dt173gproject");
     }
 ?>
