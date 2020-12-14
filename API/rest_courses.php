@@ -12,7 +12,7 @@ require('Handlers.php');
 header('Content-Type: application/json'); //this is a webbservice that sends and recieves data in JSON format
 header('Access-Control-Allow-Origin: *'); // allows all domains to access this webbserver
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE'); // actively allowing methods delete and put
-header('Access-Controll-Allow-Headers: Access-Control-allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
+header('Access-Control-Allow-Headers: Access-Control-allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 $method = $_SERVER['REQUEST_METHOD']; /*För variablen input och delete finns 
 ingen färdig metod därför görs att: I variablen method lagras 
@@ -20,7 +20,7 @@ metoden som är medskickad i anropet till webbtjänsten.*/
 
 
 $ch = new CourseHandler();
-$lh = new LoginHandler();
+//$lh = new LoginHandler();
 
 switch ($method) {
     case 'GET':
@@ -40,7 +40,10 @@ switch ($method) {
         break;
     case 'POST':
         $data = json_decode(file_get_contents("php://input"));
-        if($lh->authorized($data->email)) {
+         session_start();
+         //echo json_encode(array("message" => $email));
+          //echo json_encode(array("message" => $_SESSION["EMAIL"]));
+       if($_SESSION["EMAIL"] == $data->email){
             /*function to create row*/
             $test = $ch->insertCourseByValues($data->course_name, $data->university, $data->start_date, $data->end_date);
             if ($test) {
@@ -59,7 +62,10 @@ switch ($method) {
         break;
     case 'PUT':
         $data = json_decode(file_get_contents("php://input")); /*"data" is a json object that is reieved from the front end when it does a put request.*/
-        if($lh->authorized($data->email)) {
+         session_start();
+         //echo json_encode(array("message" => $email));
+          //echo json_encode(array("message" => $_SESSION["EMAIL"]));
+       if($_SESSION["EMAIL"] == $data->email){
             /*If no code is sent, send error*/
             if (empty($data->course_name) && empty($data->university)) {
                 http_response_code(510); /* Not extended */
@@ -85,7 +91,8 @@ switch ($method) {
     case 'DELETE':
         /* if no id is sent, send error*/
         $data = json_decode(file_get_contents("php://input"));
-        if($lh->authorized($data->email)) {
+        session_start();
+        if($_SESSION["EMAIL"] == $data->email){
             if (empty($data->course_name) && empty($data->university)) {
                 http_response_code(510); //Not Extended
                 $result = array("message" => "No  key is sent");

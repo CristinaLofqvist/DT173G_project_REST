@@ -37,19 +37,9 @@ class LoginHandler {
             {
                 session_start();
                 $_SESSION["EMAIL"] = $email;
+               
                 return true;
             }
-        }
-        return false;
-    }
-
-    public function authorized($email) {
-        session_start();
-        if(empty($email) || empty($_SESSION["EMAIL"])){
-            return false;
-        }
-        if($_SESSION["EMAIL"] == $email){
-            return true;
         }
         return false;
     }

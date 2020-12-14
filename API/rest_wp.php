@@ -14,15 +14,14 @@ require('Handlers.php');
 header('Content-Type: application/json'); //this is a webbservice that sends and recieves data in JSON format
 header('Access-Control-Allow-Origin: *'); // allows all domains to access this webbserver
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE'); // actively allowing methods delete and put
-header('Access-Controll-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
-
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 $method = $_SERVER['REQUEST_METHOD']; /*För variablen input och delete finns 
 ingen färdig metod därför görs att: I variablen method lagras 
 metoden som är medskickad i anropet till webbtjänsten.*/
 
 
 $wph = new WpHandler();
-$lh = new LoginHandler();
+//$lh = new LoginHandler();
 http_response_code(404); //Not found
 $result = array("message" => "No");
 switch ($method) {
@@ -39,7 +38,7 @@ switch ($method) {
             for ($i = 0; $i < count($webpages); $i++) {
                 array_push($result, $webpages[$i]->getWp());
             }
-          
+             
         } else {
            
             http_response_code(404); //Not found
@@ -48,7 +47,8 @@ switch ($method) {
         break;
     case 'POST':
         $data = json_decode(file_get_contents("php://input"));
-        if($lh->authorized($data->email)) {
+        session_start();
+       if($_SESSION["EMAIL"] == $data->email){
             /*function to create row*/
             $test = $wph->insertWebpageByValues($data->title, $data->url, $data->description);
             if ($test) {
@@ -68,7 +68,8 @@ switch ($method) {
     case 'PUT':
         $data = json_decode(file_get_contents("php://input")); /*"data" is a json object that is reieved from the front end when it does a put request.*/
         /*If no code is sent, send error*/
-        if($lh->authorized($data->email)) {
+         session_start();
+       if($_SESSION["EMAIL"] == $data->email){
             if (empty($data->title) && empty($data->url)) {
                 http_response_code(510); /* Not extended */
                 $result = array("message" => "No key is sent");
@@ -92,7 +93,8 @@ switch ($method) {
     case 'DELETE':
         /* if no id is sent, send error*/
         $data = json_decode(file_get_contents("php://input"));
-        if($lh->authorized($data->email)) {
+        session_start();
+       if($_SESSION["EMAIL"] == $data->email){
             if (empty($data->title) && empty($data->url)) {
                 http_response_code(510); //Not Extended
                 $result = array("message" => "No  key is sent");
