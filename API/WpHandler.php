@@ -60,6 +60,7 @@ class WpHandler
         return $webpages;
     }
 
+
     public function insertWebpageByValues(string $title, string $url, string $desc)
     {
         $this->database->connect();

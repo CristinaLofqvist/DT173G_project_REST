@@ -22,8 +22,6 @@ metoden som är medskickad i anropet till webbtjänsten.*/
 
 $wph = new WpHandler();
 //$lh = new LoginHandler();
-http_response_code(404); //Not found
-$result = array("message" => "No");
 switch ($method) {
     case 'GET':
 
@@ -38,7 +36,7 @@ switch ($method) {
             for ($i = 0; $i < count($webpages); $i++) {
                 array_push($result, $webpages[$i]->getWp());
             }
-             
+          
         } else {
            
             http_response_code(404); //Not found
@@ -47,8 +45,7 @@ switch ($method) {
         break;
     case 'POST':
         $data = json_decode(file_get_contents("php://input"));
-        session_start();
-       if($_SESSION["EMAIL"] == $data->email){
+        
             /*function to create row*/
             $test = $wph->insertWebpageByValues($data->title, $data->url, $data->description);
             if ($test) {
@@ -58,18 +55,10 @@ switch ($method) {
                 http_response_code(503); /* server error */
                 $result = array("message" => "Webpage not created");
             }
-        } else {
-            http_response_code(401);
-            $result =array(
-                "message" => "Access denied.",
-            );
-        }
         break;
     case 'PUT':
         $data = json_decode(file_get_contents("php://input")); /*"data" is a json object that is reieved from the front end when it does a put request.*/
         /*If no code is sent, send error*/
-         session_start();
-       if($_SESSION["EMAIL"] == $data->email){
             if (empty($data->title) && empty($data->url)) {
                 http_response_code(510); /* Not extended */
                 $result = array("message" => "No key is sent");
@@ -83,18 +72,10 @@ switch ($method) {
                     $result = array("message" => "Webpage not updated");
                 }
             }
-        } else {
-            http_response_code(401);
-            $result =array(
-                "message" => "Access denied.",
-            );
-        }
         break;
     case 'DELETE':
         /* if no id is sent, send error*/
         $data = json_decode(file_get_contents("php://input"));
-        session_start();
-       if($_SESSION["EMAIL"] == $data->email){
             if (empty($data->title) && empty($data->url)) {
                 http_response_code(510); //Not Extended
                 $result = array("message" => "No  key is sent");
@@ -109,12 +90,6 @@ switch ($method) {
                     $result = array("message" => "Webpage not deleted");
                 }
             }
-        } else {
-            http_response_code(401);
-            $result =array(
-                "message" => "Access denied.",
-            );
-        }
         break;
 }
 /* return the result as JSON*/

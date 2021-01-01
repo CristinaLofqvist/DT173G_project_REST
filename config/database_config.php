@@ -1,6 +1,5 @@
 <?php
     $devMode=false;
-    session_start();
     //Enable error reporting
     error_reporting(-0);//Report all detected errors
     ini_set("display_errors",1);//Display all errors

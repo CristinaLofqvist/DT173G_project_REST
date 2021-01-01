@@ -40,10 +40,8 @@ switch ($method) {
         break;
     case 'POST':
         $data = json_decode(file_get_contents("php://input"));
-         session_start();
          //echo json_encode(array("message" => $email));
           //echo json_encode(array("message" => $_SESSION["EMAIL"]));
-       if($_SESSION["EMAIL"] == $data->email){
             /*function to create row*/
             $test = $ch->insertCourseByValues($data->course_name, $data->university, $data->start_date, $data->end_date);
             if ($test) {
@@ -53,19 +51,12 @@ switch ($method) {
                 http_response_code(503); /* server error */
                 $result = array("message" => "Course not created");
             }
-        } else {
-            http_response_code(401);
-            $result =array(
-                "message" => "Access denied.",
-            );
-        }
         break;
     case 'PUT':
         $data = json_decode(file_get_contents("php://input")); /*"data" is a json object that is reieved from the front end when it does a put request.*/
-         session_start();
+         
          //echo json_encode(array("message" => $email));
           //echo json_encode(array("message" => $_SESSION["EMAIL"]));
-       if($_SESSION["EMAIL"] == $data->email){
             /*If no code is sent, send error*/
             if (empty($data->course_name) && empty($data->university)) {
                 http_response_code(510); /* Not extended */
@@ -81,18 +72,10 @@ switch ($method) {
                     $result = array("message" => "Course not updated");
                 }
             }
-        } else {
-            http_response_code(401);
-            $result =array(
-                "message" => "Access denied.",
-            );
-        }
         break;
     case 'DELETE':
         /* if no id is sent, send error*/
         $data = json_decode(file_get_contents("php://input"));
-        session_start();
-        if($_SESSION["EMAIL"] == $data->email){
             if (empty($data->course_name) && empty($data->university)) {
                 http_response_code(510); //Not Extended
                 $result = array("message" => "No  key is sent");
@@ -107,12 +90,6 @@ switch ($method) {
                     $result = array("message" => "Course not deleted");
                 }
             }
-        } else {
-            http_response_code(401);
-            $result =array(
-                "message" => "Access denied.",
-            );
-        }
         break;
 }
 /* return the result as JSON*/
