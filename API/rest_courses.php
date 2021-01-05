@@ -12,7 +12,7 @@ require('Handlers.php');
 header('Content-Type: application/json'); //this is a webbservice that sends and recieves data in JSON format
 header('Access-Control-Allow-Origin: *'); // allows all domains to access this webbserver
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE'); // actively allowing methods delete and put
-header('Access-Control-Allow-Headers: Access-Control-allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 $method = $_SERVER['REQUEST_METHOD']; /*För variablen input och delete finns 
 ingen färdig metod därför görs att: I variablen method lagras 
