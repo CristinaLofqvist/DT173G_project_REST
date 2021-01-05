@@ -3,6 +3,9 @@
 rest webbtjänst återfinns i API
 
 följande tjänster finns:
+rest_get.php:
+
+ * get motsvarar get från alla nedan apier 
 
 rest_courses.php:
 
